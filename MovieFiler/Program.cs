@@ -193,29 +193,37 @@ namespace MovieFiler
             foreach (var fn in lst)
             {
                 FileInfo f = new FileInfo(fn);
-                
+
                 var title = parseTitleFromFile(f);
-                Console.Write(string.Format("Searching IMDB for {0} ... ", title));
-                var m = new IMDb(title);
-                if (m.status)
+                var movie = movieList.Where(x => x.Title == title).FirstOrDefault();
+                if (movie == null)
                 {
-                    Console.WriteLine(m.Id + ".");
-                    DateTime rlsd;
-                    double rating;
-
-                    var movie = new Movie()
+                    Console.Write(string.Format("Searching IMDB for {0} ... ", title));
+                    var m = new IMDb(title);
+                    if (m.status)
                     {
-                        Title = m.Title,
-                        ReleaseDate = DateTime.TryParse(m.ReleaseDate, out rlsd) ? rlsd : default(DateTime),
-                        Rating = double.TryParse(m.Rating, out rating) ? rating : default(double),
-                        ImdbID = m.Id,
-                        Genre = string.Join("/", m.Genres.ToArray()),
-                        OriginalFileName = f.FullName,
-                        FileModifiedDate = f.LastWriteTime,
-                        FileCreatedDate = f.CreationTime,
-                        OriginalTitle = title
-                    };
+                        Console.WriteLine(m.Id + ".");
+                        DateTime rlsd;
+                        double rating;
 
+                        movie = new Movie()
+                        {
+                            Title = m.Title,
+                            ReleaseDate = DateTime.TryParse(m.ReleaseDate, out rlsd) ? rlsd : default(DateTime),
+                            Rating = double.TryParse(m.Rating, out rating) ? rating : default(double),
+                            ImdbID = m.Id,
+                            Genre = string.Join("/", m.Genres.ToArray()),
+                            OriginalFileName = f.FullName,
+                            FileModifiedDate = f.LastWriteTime,
+                            FileCreatedDate = f.CreationTime,
+                            OriginalTitle = title
+                        };
+
+                        movieList.Add(movie);
+                    }
+                }
+                if (movie != null)
+                {
                     string fname = fn;
                     if (fn.Contains(@"\"))
                         fname = fn.Substring(fn.LastIndexOf(@"\") + 1);
@@ -225,12 +233,10 @@ namespace MovieFiler
                     {
                         File.Move(movie.OriginalFileName, Path.Combine(allPath, fname));
                     }
-                    catch { //file in use and continue
+                    catch
+                    { //file in use and continue
                         continue;
                     }
-                    movie.FileName = Path.Combine(allPath, fname);
-
-                    movieList.Add(movie);
 
                     #region create hardlink for alphabet letter
                     AddLink(Path.Combine(abcPath, movie.Title.Substring(0, 1)), Path.Combine(allPath, fname));
@@ -260,8 +266,9 @@ namespace MovieFiler
                     }
                     #endregion
 
-
+                    movie.FileName = Path.Combine(allPath, fname);
                 }
+
                 else
                 {
                     Console.WriteLine("not found.");
