@@ -16,7 +16,7 @@ namespace MovieFiler
         public string OriginalTitle ;
         [FieldQuoted()]
         public string ImdbID ;
-        [FieldConverter(ConverterKind.Date,"yy/MM/dd HH:mm")]
+        [FieldConverter(ConverterKind.Date,"yyyy/MM/dd hh:mm:ss tt")]
         public DateTime? ReleaseDate ;
         [FieldQuoted()]
         public string Genre ;
@@ -25,9 +25,9 @@ namespace MovieFiler
         public string FileName ;
         [FieldQuoted()]
         public string OriginalFileName ;
-        [FieldConverter(ConverterKind.Date, "yy/MM/dd HH:mm")]
+        [FieldConverter(ConverterKind.Date, "yyyy/MM/dd hh:mm:ss tt")]
         public DateTime FileCreatedDate ;
-        [FieldConverter(ConverterKind.Date, "yy/MM/dd HH:mm")]
+        [FieldConverter(ConverterKind.Date, "yyyy/MM/dd hh:mm:ss tt")]
         public DateTime FileModifiedDate ;
         
         /// <summary>
