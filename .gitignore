@@ -1,0 +1,18 @@
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+bin
+obj
+
+#node modules
+node_modules
+
+#SVN folders
+.svn
+
+#Nuget packages
+packages
+
+#dropbox
+.dropbox
+
+# mstest test results
+TestResults
