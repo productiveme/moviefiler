@@ -9,6 +9,7 @@ Since NTFS allows us to add hard or symbolic links, the idea was to create subfo
 ### What it does
 
 Usage 1: 
+
 	moviefiler.exe *.mp4 movies.csv
 
 
@@ -24,6 +25,7 @@ The meta data is saved to a local CSV file (movies.csv in this case). Next time 
 ### Undo wrong matches
 
 Usage 2:
+
 	moviefiler.exe -u movies.csv
 
 After opening the local CSV file (movies.csv) and placing any character (e.g. "X") in the "Undo" column for the incorrectly matched movies, one can run the above command. This will remove these matches and move the files back to the original location.
