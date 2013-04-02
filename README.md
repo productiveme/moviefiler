@@ -13,7 +13,7 @@ Usage 1:
 	moviefiler.exe *.mp4 movies.csv
 
 
-The app iterates over the files and for each mp4 file it searches IMDB.com for the meta data based on the filename. It then moves the file to an "All" folder after which it creates folders and hardlinks in the following way:
+The app iterates over the files and for each .mp4 file it searches IMDB.com for the meta data based on the filename. It then moves the file to an "All" folder after which it creates folders and hardlinks in the following way:
 
 - "Year/2011" if release date was in 2011
 - "ABC/M" if the movie's title starts with "M"
