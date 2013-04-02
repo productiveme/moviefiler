@@ -131,16 +131,16 @@ namespace MovieFiler
             if (list == null) return;
             StreamWriter sw;
             bool newfile;
-            if (saveFile.Exists)
-            {
-                sw = saveFile.AppendText();
-                newfile = false;
-            }
-            else
-            {
+            //if (saveFile.Exists)
+            //{
+            //    sw = saveFile.AppendText();
+            //    newfile = false;
+            //}
+            //else
+            //{
                 sw = saveFile.CreateText();
                 newfile = true;
-            }
+            //}
             using (sw)
             {
 
@@ -188,6 +188,16 @@ namespace MovieFiler
                 Directory.CreateDirectory(ratingPath);
             #endregion
 
+            if (new FileInfo(output).Exists)
+            {
+                movieList.Clear();
+                FileHelperEngine<Movie> fh = new FileHelperEngine<Movie>();
+                foreach (var m in fh.ReadFile(output))
+                {
+                    movieList.Add(m);
+                }
+            }
+
             var lst = (from o in Directory.EnumerateFiles(path, filespec, (recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                        select o);
             foreach (var fn in lst)
@@ -195,7 +205,7 @@ namespace MovieFiler
                 FileInfo f = new FileInfo(fn);
 
                 var title = parseTitleFromFile(f);
-                var movie = movieList.Where(x => x.Title == title).FirstOrDefault();
+                var movie = movieList.Where(x => x.OriginalTitle == title).FirstOrDefault();
                 if (movie == null)
                 {
                     Console.Write(string.Format("Searching IMDB for {0} ... ", title));
@@ -221,6 +231,11 @@ namespace MovieFiler
 
                         movieList.Add(movie);
                     }
+                }
+                else
+                {
+                    Console.WriteLine(string.Format("Using IMDB data from {1} for {0}.", title, output));
+                    movie.OriginalFileName = f.FullName;
                 }
                 if (movie != null)
                 {
