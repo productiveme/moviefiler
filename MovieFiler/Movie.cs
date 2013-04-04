@@ -16,7 +16,7 @@ namespace MovieFiler
         public string OriginalTitle ;
         [FieldQuoted()]
         public string ImdbID ;
-        [FieldConverter(ConverterKind.Date,"yyyy/MM/dd hh:mm:ss tt")]
+        [FieldConverter(ConverterKind.Date,MovieFiler.Program.dateFormat)]
         public DateTime? ReleaseDate ;
         [FieldQuoted()]
         public string Genre ;
@@ -25,10 +25,10 @@ namespace MovieFiler
         public string FileName ;
         [FieldQuoted()]
         public string OriginalFileName ;
-        [FieldConverter(ConverterKind.Date, "yyyy/MM/dd hh:mm:ss tt")]
-        public DateTime FileCreatedDate ;
-        [FieldConverter(ConverterKind.Date, "yyyy/MM/dd hh:mm:ss tt")]
-        public DateTime FileModifiedDate ;
+        [FieldConverter(ConverterKind.Date, MovieFiler.Program.dateFormat)]
+        public DateTime? FileCreatedDate ;
+        [FieldConverter(ConverterKind.Date, MovieFiler.Program.dateFormat)]
+        public DateTime? FileModifiedDate ;
         
         /// <summary>
         /// If Undo is not an empty string after reading file, undo actions

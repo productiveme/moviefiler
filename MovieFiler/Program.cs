@@ -23,6 +23,8 @@ namespace MovieFiler
 
         private static List<Movie> movieList = new List<Movie>();
 
+        public const string dateFormat = "yy/MM/dd HH:mm";
+
         static void Main(string[] args)
         {
             if (args.Count() < 2)
@@ -152,8 +154,7 @@ namespace MovieFiler
                 {
                     T item1 = item; // to prevent access to modified closure
                     var values = props
-                    .Select(x => x.GetValue(item1) ?? "") // the null coalescing operator, replace null with ""
-                    .Select(x => x.ToString())
+                        .Select(x => (x.FieldType == typeof(DateTime?) ? (((DateTime?)x.GetValue(item1)).HasValue ? ((DateTime?)x.GetValue(item1)).Value.ToString(dateFormat) : "") : x.GetValue(item1).ToString()) ?? "") // the null coalescing operator, replace null with ""
                     .Select(x => x.Contains(delimiter) || x.Contains("\n") ? "\"" + x + "\"" : x); // if a value contains the delimiter, surround with quotes
                     sw.WriteLine(string.Join(delimiter, values.ToArray()));
                 }
